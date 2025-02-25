@@ -21,3 +21,21 @@
   --color-mine-cyan: #48e6f1;
   --color-mine-green: #008744;
 }
+
+#board {
+  display: grid;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  background: #ccc;
+  border: 1px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
