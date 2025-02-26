@@ -33,7 +33,6 @@ export class Board {
       if (!this.hasMine(index)) {
         this.cells[index].setMine(true);
         placed++;
-        console.log(placed + " " + this.cells[index]);
       }
     }
   }

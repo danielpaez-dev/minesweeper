@@ -1,27 +1,28 @@
 :root {
-  --color-white: #ffffff;
-  --color-black: #000000;
-  --color-nav: #4a752c;
-  --color-cell-light-green: #aad751;
-  --color-cell-dark-green: #a2d149;
-  --color-cell-revealed: #e5c29f;
-  --color-cell-unrevealed: #d7b899;
-  --color-one: #1976d2;
-  --color-two: #388e3c;
-  --color-three: #d32f2f;
-  --color-four: #7b1fa2;
-  --color-five: #b8860b;
-  --color-six: #00ced1;
-  --color-seven: #000000;
-  --color-eight: #808080;
-  --color-mine-red: #db3236;
-  --color-mine-purple: #b648f2;
-  --color-mine-pink: #ed44b5;
-  --color-mine-orange: #f4840d;
-  --color-mine-yellow: #f4c20d;
-  --color-mine-blue: #4885ed;
-  --color-mine-cyan: #48e6f1;
-  --color-mine-green: #008744;
+  --colour-white: #ffffff;
+  --colour-black: #000000;
+  --colour-nav: #4a752c;
+  --colour-cell-unrevealed-light: #aad751;
+  --colour-cell-unrevealed-dark: #a2d149;
+  --colour-cell-revealed-light: #e5c29f;
+  --colour-cell-revealed-dark: #d7b899;
+  --colour-one: #1976d2;
+  --colour-two: #388e3c;
+  --colour-three: #d32f2f;
+  --colour-four: #7b1fa2;
+  --colour-five: #b8860b;
+  --colour-six: #00ced1;
+  --colour-seven: #000000;
+  --colour-eight: #808080;
+  --colour-mine-red: #db3236;
+  --colour-mine-purple: #b648f2;
+  --colour-mine-pink: #ed44b5;
+  --colour-mine-orange: #f4840d;
+  --colour-mine-yellow: #f4c20d;
+  --colour-mine-blue: #4885ed;
+  --colour-mine-cyan: #48e6f1;
+  --colour-mine-green: #008744;
+  /* Agrega los colores de los centros de las otras minas aquí */
 }
 
 #board {
@@ -39,17 +40,108 @@
 }
 
 .unrevealed-light {
-  background: var(--color-cell-light-green);
+  background: var(--colour-cell-unrevealed-light);
 }
 
 .unrevealed-dark {
-  background: var(--color-cell-dark-green);
+  background: var(--colour-cell-unrevealed-dark);
+}
+
+.revealed-light {
+  background: var(--colour-cell-revealed-light);
+}
+
+.revealed-dark {
+  background: var(--colour-cell-revealed-dark);
 }
 
 .unrevealed-light,
-.unrevealed-dark {
+.unrevealed-dark,
+.revealed-light,
+.revealed-dark {
   &:hover {
     filter: brightness(1.5);
     filter: opacity(0.8);
+  }
+}
+
+.mine-1::before,
+.mine-2::before,
+.mine-3::before,
+.mine-4::before,
+.mine-5::before,
+.mine-6::before,
+.mine-7::before,
+.mine-8::before {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  margin: auto;
+  filter: brightness(0.6);
+}
+
+.mine-1 {
+  background: var(--colour-mine-red);
+
+  &::before {
+    background: var(--colour-mine-red);
+  }
+}
+
+.mine-2 {
+  background: var(--colour-mine-orange);
+
+  &::before {
+    background: var(--colour-mine-orange);
+  }
+}
+
+.mine-3 {
+  background: var(--colour-mine-yellow);
+
+  &::before {
+    background: var(--colour-mine-yellow);
+  }
+}
+
+.mine-4 {
+  background: var(--colour-mine-green);
+
+  &::before {
+    background: var(--colour-mine-green);
+  }
+}
+
+.mine-5 {
+  background: var(--colour-mine-cyan);
+
+  &::before {
+    background: var(--colour-mine-cyan);
+  }
+}
+
+.mine-6 {
+  background: var(--colour-mine-blue);
+
+  &::before {
+    background: var(--colour-mine-blue);
+  }
+}
+
+.mine-7 {
+  background: var(--colour-mine-purple);
+
+  &::before {
+    background: var(--colour-mine-purple);
+  }
+}
+
+.mine-8 {
+  background: var(--colour-mine-pink);
+
+  &::before {
+    background: var(--colour-mine-pink);
   }
 }

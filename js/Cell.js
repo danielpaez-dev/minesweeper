@@ -32,4 +32,27 @@ export class Cell {
   setMine(mine) {
     this.mine = mine;
   }
+
+  reveal() {
+    if (this.getMine()) {
+      this.placeMine();
+    } else {
+      if (this.element.classList.contains("unrevealed-light")) {
+        this.element.classList.remove("unrevealed-light");
+        this.element.classList.add("revealed-light");
+      }
+      if (this.element.classList.contains("unrevealed-dark")) {
+        this.element.classList.remove("unrevealed-dark");
+        this.element.classList.add("revealed-dark");
+      }
+    }
+  }
+
+  placeMine() {
+    this.element.classList.add(this.generateRandomColour());
+  }
+
+  generateRandomColour() {
+    return `mine-${Math.floor(Math.random() * 8 + 1)}`;
+  }
 }
