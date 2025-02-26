@@ -4,14 +4,14 @@ export class Cell {
     this.y = y;
     this.board = document.getElementById("board");
     this.element = this.createCell();
+    this.mine = false;
   }
 
   createCell() {
     const cell = document.createElement("div");
     cell.id = `${this.x}-${this.y}`;
-    let module = (this.x + this.y) % 2;
     cell.className = "cell";
-    if (module === 0) {
+    if (this.isEven(this.x + this.y)) {
       cell.classList.add("unrevealed-light");
     } else {
       cell.classList.add("unrevealed-dark");
@@ -19,5 +19,17 @@ export class Cell {
 
     this.board.appendChild(cell);
     return cell;
+  }
+
+  isEven(number) {
+    return number % 2 === 0;
+  }
+
+  getMine() {
+    return this.mine;
+  }
+
+  setMine(mine) {
+    this.mine = mine;
   }
 }
