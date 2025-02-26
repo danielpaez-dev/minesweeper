@@ -9,7 +9,14 @@ export class Cell {
   createCell() {
     const cell = document.createElement("div");
     cell.id = `${this.x}-${this.y}`;
+    let module = (this.x + this.y) % 2;
     cell.className = "cell";
+    if (module === 0) {
+      cell.classList.add("unrevealed-light");
+    } else {
+      cell.classList.add("unrevealed-dark");
+    }
+
     this.board.appendChild(cell);
     return cell;
   }

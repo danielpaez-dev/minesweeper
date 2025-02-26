@@ -4,6 +4,8 @@
   --color-nav: #4a752c;
   --color-cell-light-green: #aad751;
   --color-cell-dark-green: #a2d149;
+  --color-cell-revealed: #e5c29f;
+  --color-cell-unrevealed: #d7b899;
   --color-one: #1976d2;
   --color-two: #388e3c;
   --color-three: #d32f2f;
@@ -29,13 +31,25 @@
 .cell {
   width: 30px;
   height: 30px;
-  background: #ccc;
-  border: 1px solid #999;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   user-select: none;
-  font-weight: bold;
   transition: background 0.3s;
+}
+
+.unrevealed-light {
+  background: var(--color-cell-light-green);
+}
+
+.unrevealed-dark {
+  background: var(--color-cell-dark-green);
+}
+
+.unrevealed-light,
+.unrevealed-dark {
+  &:hover {
+    filter: brightness(1.5);
+    filter: opacity(0.8);
+  }
 }
