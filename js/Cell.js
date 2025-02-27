@@ -34,7 +34,9 @@ export class Cell {
     this.mine = mine;
   }
 
-  reveal(board) {
+  reveal(board, isCascade = false) {
+    if (this.revealed && !isCascade) return;
+
     if (this.getMine()) {
       this.placeMine();
     } else {
@@ -46,9 +48,13 @@ export class Cell {
         this.element.classList.remove("unrevealed-dark");
         this.element.classList.add("revealed-dark");
       }
-      board.countAdjacentMines(this.x, this.y);
+      const numbers = board.countAdjacentMines(this.x, this.y);
       if (this.number > 0) {
         this.placeNumber();
+      } else {
+        if (!isCascade) {
+          board.cascadeReveal(this.x, this.y);
+        }
       }
     }
   }

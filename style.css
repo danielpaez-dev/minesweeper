@@ -27,6 +27,7 @@
 #board {
   display: grid;
   font-weight: bold;
+  font-size: x-large;
 }
 
 .cell {
@@ -56,9 +57,7 @@
 }
 
 .unrevealed-light,
-.unrevealed-dark,
-.revealed-light,
-.revealed-dark {
+.unrevealed-dark {
   &:hover {
     filter: brightness(1.5);
     filter: opacity(0.8);

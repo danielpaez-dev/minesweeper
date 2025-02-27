@@ -49,16 +49,6 @@ export class Board {
     return this.cells[index] && this.cells[index].getMine();
   }
 
-  getMinePositions() {
-    const minePositions = [];
-    for (const index in this.cells) {
-      if (this.cells[index].getMine()) {
-        minePositions.push(index);
-      }
-    }
-    return minePositions;
-  }
-
   countAdjacentMines(x, y) {
     let count = 0;
     const index = `${x}-${y}`;
@@ -81,6 +71,42 @@ export class Board {
 
     if (count > 0) {
       this.cells[index].setNumber(count);
+    }
+
+    return count;
+  }
+
+  cascadeReveal(x, y, visited = new Set()) {
+    if (this.isInLimit(x, y)) return;
+
+    const index = `${x}-${y}`;
+
+    // Comprueba si la casilla ya ha sido checkeada por la función recursiva
+    if (visited.has(index)) return;
+    visited.add(index);
+
+    const cell = this.cells[index];
+
+    if (!cell.revealed) {
+      cell.reveal(this, true);
+    }
+
+    if (cell.number > 0) return;
+
+    for (let xCalculate = x - 1; xCalculate <= x + 1; xCalculate++) {
+      for (let yCalculate = y - 1; yCalculate <= y + 1; yCalculate++) {
+        if (xCalculate === x && yCalculate === y) continue;
+        this.cascadeReveal(xCalculate, yCalculate, visited);
+      }
+    }
+  }
+
+  // Mira si está dentro del límite del tablero
+  isInLimit(x, y) {
+    if (x < 1 || x > this.rows || y < 1 || y > this.cols) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

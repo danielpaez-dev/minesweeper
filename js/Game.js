@@ -13,7 +13,6 @@ export class Game {
 
   createBoard(rows, cols, mines) {
     let board = new Board(rows, cols, mines);
-    console.log(board.getMinePositions());
     return board;
   }
 }
