@@ -22,11 +22,11 @@
   --colour-mine-blue: #4885ed;
   --colour-mine-cyan: #48e6f1;
   --colour-mine-green: #008744;
-  /* Agrega los colores de los centros de las otras minas aquí */
 }
 
 #board {
   display: grid;
+  font-weight: bold;
 }
 
 .cell {
@@ -144,4 +144,30 @@
   &::before {
     background: var(--colour-mine-pink);
   }
+}
+
+.colour-1 {
+  color: var(--colour-one);
+}
+
+.colour-2 {
+  color: var(--colour-two);
+}
+.colour-3 {
+  color: var(--colour-three);
+}
+.colour-4 {
+  color: var(--colour-four);
+}
+.colour-5 {
+  color: var(--colour-five);
+}
+.colour-6 {
+  color: var(--colour-six);
+}
+.colour-7 {
+  color: var(--colour-seven);
+}
+.colour-8 {
+  color: var(--colour-eight);
 }

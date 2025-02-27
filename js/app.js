@@ -17,7 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const cell = game.board.cells[index];
 
       if (cell) {
-        cell.reveal();
+        cell.reveal(game.board);
       }
     }
   });

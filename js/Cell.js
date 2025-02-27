@@ -5,6 +5,7 @@ export class Cell {
     this.board = document.getElementById("board");
     this.element = this.createCell();
     this.mine = false;
+    this.number = 0;
   }
 
   createCell() {
@@ -33,7 +34,7 @@ export class Cell {
     this.mine = mine;
   }
 
-  reveal() {
+  reveal(board) {
     if (this.getMine()) {
       this.placeMine();
     } else {
@@ -45,6 +46,10 @@ export class Cell {
         this.element.classList.remove("unrevealed-dark");
         this.element.classList.add("revealed-dark");
       }
+      board.countAdjacentMines(this.x, this.y);
+      if (this.number > 0) {
+        this.placeNumber();
+      }
     }
   }
 
@@ -54,5 +59,20 @@ export class Cell {
 
   generateRandomColour() {
     return `mine-${Math.floor(Math.random() * 8 + 1)}`;
+  }
+
+  getNumber() {
+    return this.number;
+  }
+
+  setNumber(number) {
+    this.number = number;
+  }
+
+  placeNumber() {
+    const numberElement = document.createElement("span");
+    numberElement.textContent = this.number;
+    numberElement.classList.add(`colour-${this.number}`);
+    this.element.appendChild(numberElement);
   }
 }

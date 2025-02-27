@@ -58,4 +58,29 @@ export class Board {
     }
     return minePositions;
   }
+
+  countAdjacentMines(x, y) {
+    let count = 0;
+    const index = `${x}-${y}`;
+
+    for (let xCalculate = x - 1; xCalculate <= x + 1; xCalculate++) {
+      for (let yCalculate = y - 1; yCalculate <= y + 1; yCalculate++) {
+        if (
+          xCalculate > 0 &&
+          xCalculate <= this.rows &&
+          yCalculate > 0 &&
+          yCalculate <= this.cols
+        ) {
+          if (xCalculate === x && yCalculate === y) continue;
+          if (this.cells[`${xCalculate}-${yCalculate}`].getMine()) {
+            count++;
+          }
+        }
+      }
+    }
+
+    if (count > 0) {
+      this.cells[index].setNumber(count);
+    }
+  }
 }
