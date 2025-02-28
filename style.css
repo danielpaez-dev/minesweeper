@@ -6,6 +6,7 @@
   --colour-cell-unrevealed-dark: #a2d149;
   --colour-cell-revealed-light: #e5c29f;
   --colour-cell-revealed-dark: #d7b899;
+  --colour-cell-border: #87af3a;
   --colour-one: #1976d2;
   --colour-two: #388e3c;
   --colour-three: #d32f2f;
@@ -57,7 +58,9 @@
 }
 
 .unrevealed-light,
-.unrevealed-dark {
+.unrevealed-dark,
+.revealed-dark:has(span),
+.revealed-light:has(span) {
   &:hover {
     filter: brightness(1.5);
     filter: opacity(0.8);
@@ -169,4 +172,20 @@
 }
 .colour-8 {
   color: var(--colour-eight);
+}
+
+.border-top {
+  border-top: 1px solid var(--colour-cell-border);
+}
+
+.border-right {
+  border-right: 1px solid var(--colour-cell-border);
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--colour-cell-border);
+}
+
+.border-left {
+  border-left: 1px solid var(--colour-cell-border);
 }

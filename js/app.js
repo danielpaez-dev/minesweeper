@@ -14,6 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
         e.target.classList.contains("unrevealed-dark"))
     ) {
       const index = e.target.id;
+      console.log(index);
       const cell = game.board.cells[index];
 
       if (cell) {

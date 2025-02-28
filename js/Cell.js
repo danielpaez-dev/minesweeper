@@ -6,6 +6,7 @@ export class Cell {
     this.element = this.createCell();
     this.mine = false;
     this.number = 0;
+    this.revealed = false;
   }
 
   createCell() {
@@ -34,8 +35,17 @@ export class Cell {
     this.mine = mine;
   }
 
+  getRevealed() {
+    return this.revealed;
+  }
+
+  setRevealed(revealed) {
+    this.revealed = revealed;
+  }
+
   reveal(board, isCascade = false) {
     if (this.revealed && !isCascade) return;
+    this.setRevealed(true);
 
     if (this.getMine()) {
       this.placeMine();
@@ -48,7 +58,7 @@ export class Cell {
         this.element.classList.remove("unrevealed-dark");
         this.element.classList.add("revealed-dark");
       }
-      const numbers = board.countAdjacentMines(this.x, this.y);
+      board.countAdjacentMines(this.x, this.y);
       if (this.number > 0) {
         this.placeNumber();
       } else {
@@ -56,6 +66,7 @@ export class Cell {
           board.cascadeReveal(this.x, this.y);
         }
       }
+      this.applyBorder(board);
     }
   }
 
@@ -76,9 +87,15 @@ export class Cell {
   }
 
   placeNumber() {
-    const numberElement = document.createElement("span");
-    numberElement.textContent = this.number;
-    numberElement.classList.add(`colour-${this.number}`);
-    this.element.appendChild(numberElement);
+    if (!this.element.hasChildNodes()) {
+      const numberElement = document.createElement("span");
+      numberElement.textContent = this.number;
+      numberElement.classList.add(`colour-${this.number}`);
+      this.element.appendChild(numberElement);
+    }
+  }
+
+  applyBorder(board) {
+    console.log(board.knowNonDiagonalAdjacentCells(this.x, this.y));
   }
 }

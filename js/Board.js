@@ -16,10 +16,10 @@ export class Board {
 
   createBoard() {
     this.board.style.gridTemplate = `repeat(${this.rows}, 30px) / repeat(${this.cols}, 30px)`;
-    for (let i = 1; i <= this.rows; i++) {
-      for (let j = 1; j <= this.cols; j++) {
-        const cell = new Cell(i, j);
-        this.cells[`${i}-${j}`] = cell;
+    for (let y = 1; y <= this.rows; y++) {
+      for (let x = 1; x <= this.cols; x++) {
+        const cell = new Cell(x, y);
+        this.cells[`${x}-${y}`] = cell;
       }
     }
   }
@@ -27,9 +27,9 @@ export class Board {
   placeMines() {
     let placed = 0;
     while (placed < this.mines) {
-      const row = this.randomRow();
-      const col = this.randomCol();
-      const index = `${row}-${col}`;
+      const x = this.randomCol();
+      const y = this.randomRow();
+      const index = `${x}-${y}`;
       if (!this.hasMine(index)) {
         this.cells[index].setMine(true);
         placed++;
@@ -108,5 +108,30 @@ export class Board {
     } else {
       return false;
     }
+  }
+
+  knowNonDiagonalAdjacentCells(x, y) {
+    let nonDiagonalAdjacentIndexes = {
+      up: [x, y + 1],
+      left: [x - 1, y],
+      right: [x + 1, y],
+      down: [x, y - 1],
+    };
+
+    const results = {}; // Initialize the results object
+
+    for (const [direction, [adjX, adjY]] of Object.entries(
+      nonDiagonalAdjacentIndexes
+    )) {
+      const index = `${adjX}-${adjY}`;
+      const cell = this.cells[index];
+      if (cell) {
+        results[direction] = cell.getRevealed();
+      } else {
+        results[direction] = false;
+      }
+    }
+
+    return results;
   }
 }
