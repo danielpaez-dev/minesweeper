@@ -57,9 +57,9 @@ export class Board {
       for (let yCalculate = y - 1; yCalculate <= y + 1; yCalculate++) {
         if (
           xCalculate > 0 &&
-          xCalculate <= this.rows &&
+          xCalculate <= this.cols &&
           yCalculate > 0 &&
-          yCalculate <= this.cols
+          yCalculate <= this.rows
         ) {
           if (xCalculate === x && yCalculate === y) continue;
           if (this.cells[`${xCalculate}-${yCalculate}`].getMine()) {
@@ -103,19 +103,15 @@ export class Board {
 
   // Mira si está dentro del límite del tablero
   isInLimit(x, y) {
-    if (x < 1 || x > this.rows || y < 1 || y > this.cols) {
-      return true;
-    } else {
-      return false;
-    }
+    return x < 1 || x > this.cols || y < 1 || y > this.rows;
   }
 
   knowNonDiagonalAdjacentCells(x, y) {
     let nonDiagonalAdjacentIndexes = {
-      up: [x, y + 1],
+      up: [x, y - 1],
       left: [x - 1, y],
       right: [x + 1, y],
-      down: [x, y - 1],
+      down: [x, y + 1],
     };
 
     const results = {}; // Initialize the results object
