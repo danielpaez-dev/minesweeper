@@ -22,4 +22,21 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
+
+  window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+
+    if (e.target.classList.contains("cell")) {
+      const index = e.target.id;
+      const cell = game.board.cells[index];
+
+      if (cell) {
+        if (!cell.getFlag()) {
+          cell.placeFlag(true);
+        } else {
+          cell.placeFlag(false);
+        }
+      }
+    }
+  });
 });

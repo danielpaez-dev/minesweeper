@@ -7,6 +7,7 @@ export class Cell {
     this.mine = false;
     this.number = 0;
     this.revealed = false;
+    this.flag = false;
   }
 
   createCell() {
@@ -97,5 +98,34 @@ export class Cell {
 
   applyBorder(board) {
     console.log(board.knowNonDiagonalAdjacentCells(this.x, this.y));
+  }
+
+  getFlag() {
+    return this.flag;
+  }
+
+  setFlag(flag) {
+    this.flag = flag;
+  }
+
+  placeFlag(flag) {
+    if (!this.getRevealed()) {
+      this.setFlag(flag);
+
+      if (this.getFlag()) {
+        this.element.classList.add("flag");
+        this.element.classList.remove("remove");
+      } else {
+        this.element.classList.add("remove");
+
+        this.element.addEventListener(
+          "animationend",
+          () => {
+            this.element.classList.remove("flag", "remove");
+          },
+          { once: true }
+        );
+      }
+    }
   }
 }
