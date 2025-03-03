@@ -45,8 +45,12 @@ export class Cell {
   }
 
   reveal(board, isCascade = false) {
-    if (this.revealed && !isCascade) return;
+    if (this.getRevealed() && !isCascade) return;
     this.setRevealed(true);
+
+    if (this.getFlag()) {
+      this.placeFlag(false);
+    }
 
     if (this.getMine()) {
       this.placeMine();
@@ -109,23 +113,21 @@ export class Cell {
   }
 
   placeFlag(flag) {
-    if (!this.getRevealed()) {
-      this.setFlag(flag);
-
-      if (this.getFlag()) {
-        this.element.classList.add("flag");
-        this.element.classList.remove("remove");
-      } else {
-        this.element.classList.add("remove");
-
-        this.element.addEventListener(
-          "animationend",
-          () => {
-            this.element.classList.remove("flag", "remove");
-          },
-          { once: true }
-        );
-      }
+    if (!flag) {
+      this.setFlag(false);
+      this.element.classList.add("remove");
+      this.element.addEventListener(
+        "animationend",
+        () => {
+          this.element.classList.remove("flag", "remove");
+        },
+        { once: true }
+      );
+      return;
     }
+    if (this.getRevealed()) return;
+    this.setFlag(true);
+    this.element.classList.add("flag");
+    this.element.classList.remove("remove");
   }
 }

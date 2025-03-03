@@ -206,7 +206,7 @@
 }
 
 .flag.remove {
-  animation: shrinkFlag 0.15s steps(9) forwards;
+  animation: shrinkFlag 0.1s steps(9) forwards;
 }
 
 @keyframes shrinkFlag {
