@@ -8,6 +8,26 @@
     <title>Minesweeper</title>
   </head>
   <body>
+    <header>
+      <nav>
+        <div id="dropdown" class="closed">
+          <h2 id="dropdown-btn" onclick="toggleDropdown()">
+            <span id="selectedOption">Medium</span>
+            <span id="arrow"></span>
+          </h2>
+          <ul id="dropdown_menu">
+            <li>Easy</li>
+            <li>Medium</li>
+            <li>Hard</li>
+          </ul>
+        </div>
+        <div id="game-info">
+          <div id="flags"></div>
+          <div id="timer"></div>
+        </div>
+        <div id="options"></div>
+      </nav>
+    </header>
     <div id="board"></div>
   </body>
 </html>

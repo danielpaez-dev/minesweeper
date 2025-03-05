@@ -23,6 +23,67 @@
   --colour-mine-blue: #4885ed;
   --colour-mine-cyan: #48e6f1;
   --colour-mine-green: #008744;
+  --border-radius: 5px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+header {
+  background-color: var(--colour-nav);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+#dropdown {
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  width: 320px;
+  cursor: pointer;
+}
+
+#dropdown-btn {
+  display: inline-block;
+  border-radius: var(--border-radius);
+  margin: 0;
+  background-color: var(--colour-white);
+  padding: 0.33em 0.5em;
+  font-size: 1em;
+}
+
+#arrow {
+  border-color: #303030 transparent;
+  border-style: solid;
+  border-width: 4px 4px 0 4px;
+  display: inline-block;
+  height: 0;
+  margin: 7px 0px;
+  vertical-align: top;
+  width: 0;
+}
+
+ul {
+  position: absolute;
+  display: hidden;
+  z-index: 100;
+  margin: 0;
+  border-radius: var(--border-radius);
+  background-color: var(--colour-white);
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  display: list-item;
+  padding: 0.25em;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 
 #board {

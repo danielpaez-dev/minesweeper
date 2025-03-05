@@ -24,9 +24,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-
     if (e.target.classList.contains("cell")) {
+      e.preventDefault();
       const index = e.target.id;
       const cell = game.board.cells[index];
 
@@ -39,4 +38,18 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
+
+  function toggleDropdown() {
+    let dropdownMenu = document.getElementById("dropdown_menu");
+
+    if (
+      dropdownMenu.style.display === "none" ||
+      dropdownMenu.style.display === ""
+    ) {
+      dropdownMenu.style.display = "block";
+    } else {
+      dropdownMenu.style.display = "none";
+    }
+  }
+  window.toggleDropdown = toggleDropdown;
 });
