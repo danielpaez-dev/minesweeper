@@ -23,26 +23,49 @@
   --colour-mine-blue: #4885ed;
   --colour-mine-cyan: #48e6f1;
   --colour-mine-green: #008744;
-  --border-radius: 5px;
+  --border-radius: 7.5px;
 }
 
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 }
+
 header {
   background-color: var(--colour-nav);
   padding: 1rem;
+}
+
+nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
 }
 
+#game-info {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  color: var(--colour-white);
+  font-weight: normal;
+  font-size: x-large;
+}
+
+#flags,
+#timer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 #dropdown {
   transition: all 0.2s ease-in-out;
   overflow: hidden;
-  width: 320px;
   cursor: pointer;
 }
 
@@ -66,30 +89,48 @@ header {
   width: 0;
 }
 
-ul {
+#dropdown_menu {
   position: absolute;
-  display: hidden;
+  display: none;
   z-index: 100;
   margin: 0;
   border-radius: var(--border-radius);
   background-color: var(--colour-white);
   padding: 0;
   list-style-type: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 li {
   display: list-item;
-  padding: 0.25em;
-
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-left: 0.25em;
+  padding-right: 1em;
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
 
+.check {
+  display: inline-block;
+  min-width: 25px;
+  height: auto;
+}
+
 #board {
-  display: grid;
+  display: inline-grid;
   font-weight: bold;
   font-size: x-large;
+}
+
+#selectedOption {
+  text-transform: capitalize;
+}
+
+.images {
+  width: 2.5rem;
+  height: auto;
 }
 
 .cell {

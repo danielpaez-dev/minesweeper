@@ -8,26 +8,34 @@
     <title>Minesweeper</title>
   </head>
   <body>
-    <header>
-      <nav>
-        <div id="dropdown" class="closed">
-          <h2 id="dropdown-btn" onclick="toggleDropdown()">
-            <span id="selectedOption">Medium</span>
-            <span id="arrow"></span>
-          </h2>
-          <ul id="dropdown_menu">
-            <li>Easy</li>
-            <li>Medium</li>
-            <li>Hard</li>
-          </ul>
-        </div>
-        <div id="game-info">
-          <div id="flags"></div>
-          <div id="timer"></div>
-        </div>
-        <div id="options"></div>
-      </nav>
-    </header>
-    <div id="board"></div>
+    <div id="container">
+      <header>
+        <nav>
+          <div id="dropdown" class="closed">
+            <h2 id="dropdown-btn" onclick="toggleDropdown()">
+              <span id="selectedOption">Medium</span>
+              <span id="arrow"></span>
+            </h2>
+            <ul id="dropdown_menu">
+              <li id="easy"><span class="check"></span>Easy</li>
+              <li id="medium"><span class="check"></span>Medium</li>
+              <li id="hard"><span class="check"></span>Hard</li>
+            </ul>
+          </div>
+          <div id="game-info">
+            <div id="flags">
+              <img src="./images/flag_icon.png" alt="flag" class="images" />
+              <span id="flagCounter"></span>
+            </div>
+            <div id="timer">
+              <img src="./images/clock_icon.png" alt="clock" class="images" />
+              <span id="timeCounter">000</span>
+            </div>
+          </div>
+          <div id="options"></div>
+        </nav>
+      </header>
+      <div id="board"></div>
+    </div>
   </body>
 </html>

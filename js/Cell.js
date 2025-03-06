@@ -1,8 +1,8 @@
 export class Cell {
-  constructor(x, y) {
+  constructor(x, y, board) {
     this.x = x;
     this.y = y;
-    this.board = document.getElementById("board");
+    this.boardInstance = board;
     this.element = this.createCell();
     this.mine = false;
     this.number = 0;
@@ -19,8 +19,6 @@ export class Cell {
     } else {
       cell.classList.add("unrevealed-dark");
     }
-
-    this.board.appendChild(cell);
     return cell;
   }
 
@@ -110,6 +108,7 @@ export class Cell {
 
   setFlag(flag) {
     this.flag = flag;
+    this.boardInstance.setFlags(flag);
   }
 
   placeFlag(flag) {
@@ -126,8 +125,10 @@ export class Cell {
       return;
     }
     if (this.getRevealed()) return;
-    this.setFlag(true);
-    this.element.classList.add("flag");
-    this.element.classList.remove("remove");
+    if (this.boardInstance.getFlags() > 0) {
+      this.setFlag(true);
+      this.element.classList.add("flag");
+      this.element.classList.remove("remove");
+    }
   }
 }

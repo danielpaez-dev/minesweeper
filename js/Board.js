@@ -1,27 +1,36 @@
 import { Cell } from "./Cell.js";
 
 export class Board {
-  constructor(rows, cols, mines) {
+  constructor(rows, cols, mines, flags) {
     this.rows = rows;
     this.cols = cols;
     this.total = rows * cols;
     this.mines = mines;
+    this.flags = flags;
     this.board = document.getElementById("board");
 
     this.cells = {};
 
     this.createBoard();
-    this.placeMines();
   }
 
   createBoard() {
+    this.deleteBoard();
     this.board.style.gridTemplate = `repeat(${this.rows}, 30px) / repeat(${this.cols}, 30px)`;
     for (let y = 1; y <= this.rows; y++) {
       for (let x = 1; x <= this.cols; x++) {
-        const cell = new Cell(x, y);
+        const cell = new Cell(x, y, this);
         this.cells[`${x}-${y}`] = cell;
+        this.board.appendChild(cell.element);
       }
     }
+    this.updateFlags();
+    this.placeMines();
+  }
+
+  deleteBoard() {
+    this.board.innerHTML = "";
+    this.cells = {};
   }
 
   placeMines() {
@@ -114,7 +123,7 @@ export class Board {
       down: [x, y + 1],
     };
 
-    const results = {}; // Initialize the results object
+    const results = {};
 
     for (const [direction, [adjX, adjY]] of Object.entries(
       nonDiagonalAdjacentIndexes
@@ -129,5 +138,19 @@ export class Board {
     }
 
     return results;
+  }
+
+  getFlags() {
+    return this.flags;
+  }
+
+  setFlags(flag) {
+    flag ? (this.flags -= 1) : (this.flags += 1);
+    this.updateFlags();
+  }
+
+  updateFlags() {
+    let flagCounter = document.getElementById("flagCounter");
+    flagCounter.textContent = this.getFlags();
   }
 }
