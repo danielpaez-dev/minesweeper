@@ -36,6 +36,7 @@ export class Cell {
 
     if (this.getMine()) {
       this.placeMine();
+      board.game.gameOver();
     } else {
       if (this.element.classList.contains("unrevealed-light")) {
         this.element.classList.remove("unrevealed-light");

@@ -8,6 +8,8 @@ window.addEventListener("DOMContentLoaded", () => {
   let firstClick = false;
 
   window.addEventListener("click", (e) => {
+    if (game.isGameOver) return;
+
     if (
       e.target.classList.contains("cell") &&
       (e.target.classList.contains("unrevealed-light") ||
@@ -35,6 +37,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("contextmenu", (e) => {
     e.preventDefault();
+
+    if (game.isGameOver) return;
+
     if (e.target.classList.contains("cell")) {
       const index = e.target.id;
       const cell = game.board.cells[index];

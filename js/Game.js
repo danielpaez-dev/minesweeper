@@ -10,10 +10,12 @@ export class Game {
     const { rows, cols, mines, flags } = settings[difficulty];
     this.board = this.createBoard(rows, cols, mines, flags);
     this.secondsElapsed = 0;
+    this.isGameOver = false;
   }
 
   createBoard(rows, cols, mines, flags) {
     let board = new Board(rows, cols, mines, flags);
+    board.game = this;
     return board;
   }
 
@@ -25,5 +27,11 @@ export class Game {
       this.secondsElapsed++;
       timer.textContent = this.secondsElapsed.toString().padStart(3, "0");
     }, 1000);
+  }
+
+  gameOver() {
+    console.log("Game Over");
+    clearInterval(this.timer);
+    this.isGameOver = true;
   }
 }
