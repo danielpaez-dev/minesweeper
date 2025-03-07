@@ -5,7 +5,7 @@ let game;
 window.addEventListener("DOMContentLoaded", () => {
   game = new Game();
   updateOption("medium");
-  let clicks = 0;
+  let firstClick = false;
 
   window.addEventListener("click", (e) => {
     if (
@@ -13,15 +13,18 @@ window.addEventListener("DOMContentLoaded", () => {
       (e.target.classList.contains("unrevealed-light") ||
         e.target.classList.contains("unrevealed-dark"))
     ) {
-      clicks++;
-      if (clicks === 1) {
-        game.timer();
-      }
       const index = e.target.id;
       const cell = game.board.cells[index];
 
       if (cell) {
-        cell.reveal(game.board);
+        if (!firstClick) {
+          firstClick = true;
+          game.timer();
+          game.board.placeMines(cell.x, cell.y);
+          cell.reveal(game.board, false, true);
+        } else {
+          cell.reveal(game.board, false, false);
+        }
       }
     }
     const dropdown = document.getElementById("dropdown");

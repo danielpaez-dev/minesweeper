@@ -25,7 +25,6 @@ export class Board {
       }
     }
     this.updateFlags();
-    this.placeMines();
   }
 
   deleteBoard() {
