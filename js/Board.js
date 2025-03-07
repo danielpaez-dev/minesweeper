@@ -10,6 +10,7 @@ export class Board {
     this.board = document.getElementById("board");
 
     this.cells = {};
+    this.placedMines = new Set();
 
     this.createBoard();
   }
@@ -32,14 +33,21 @@ export class Board {
     this.cells = {};
   }
 
-  placeMines() {
+  placeMines(safeX, safeY) {
     let placed = 0;
     while (placed < this.mines) {
       const x = this.randomCol();
       const y = this.randomRow();
+
+      // Si la celda candidata está en la zona segura (celda clickeada y sus adyacentes), la saltamos.
+      if (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1) {
+        continue;
+      }
+
       const index = `${x}-${y}`;
       if (!this.hasMine(index)) {
         this.cells[index].setMine(true);
+        this.placedMines.add(index);
         placed++;
       }
     }
@@ -107,6 +115,12 @@ export class Board {
         this.cascadeReveal(xCalculate, yCalculate, visited);
       }
     }
+  }
+
+  getSafeCells() {
+    return Object.keys(this.cells)
+      .filter((key) => !this.placedMines.has(key))
+      .map((key) => this.cells[key]);
   }
 
   // Mira si está dentro del límite del tablero
