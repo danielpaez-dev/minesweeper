@@ -116,13 +116,6 @@ export class Board {
       }
     }
   }
-
-  getSafeCells() {
-    return Object.keys(this.cells)
-      .filter((key) => !this.placedMines.has(key))
-      .map((key) => this.cells[key]);
-  }
-
   // Mira si está dentro del límite del tablero
   isInLimit(x, y) {
     return x < 1 || x > this.cols || y < 1 || y > this.rows;
@@ -153,6 +146,11 @@ export class Board {
     return results;
   }
 
+  updateFlags() {
+    let flagCounter = document.getElementById("flagCounter");
+    flagCounter.textContent = this.getFlags();
+  }
+
   getFlags() {
     return this.flags;
   }
@@ -162,8 +160,9 @@ export class Board {
     this.updateFlags();
   }
 
-  updateFlags() {
-    let flagCounter = document.getElementById("flagCounter");
-    flagCounter.textContent = this.getFlags();
+  getSafeCells() {
+    return Object.keys(this.cells)
+      .filter((key) => !this.placedMines.has(key))
+      .map((key) => this.cells[key]);
   }
 }

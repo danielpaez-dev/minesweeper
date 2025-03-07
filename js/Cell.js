@@ -26,22 +26,6 @@ export class Cell {
     return number % 2 === 0;
   }
 
-  getMine() {
-    return this.mine;
-  }
-
-  setMine(mine) {
-    this.mine = mine;
-  }
-
-  getRevealed() {
-    return this.revealed;
-  }
-
-  setRevealed(revealed) {
-    this.revealed = revealed;
-  }
-
   reveal(board, isCascade = false) {
     if (this.getRevealed() && !isCascade) return;
     this.setRevealed(true);
@@ -81,14 +65,6 @@ export class Cell {
     return `mine-${Math.floor(Math.random() * 8 + 1)}`;
   }
 
-  getNumber() {
-    return this.number;
-  }
-
-  setNumber(number) {
-    this.number = number;
-  }
-
   placeNumber() {
     if (!this.element.hasChildNodes()) {
       const numberElement = document.createElement("span");
@@ -100,15 +76,6 @@ export class Cell {
 
   applyBorder(board) {
     console.log(board.knowNonDiagonalAdjacentCells(this.x, this.y));
-  }
-
-  getFlag() {
-    return this.flag;
-  }
-
-  setFlag(flag) {
-    this.flag = flag;
-    this.boardInstance.setFlags(flag);
   }
 
   placeFlag(flag) {
@@ -130,5 +97,38 @@ export class Cell {
       this.element.classList.add("flag");
       this.element.classList.remove("remove");
     }
+  }
+
+  getFlag() {
+    return this.flag;
+  }
+
+  setFlag(flag) {
+    this.flag = flag;
+    this.boardInstance.setFlags(flag);
+  }
+
+  getMine() {
+    return this.mine;
+  }
+
+  setMine(mine) {
+    this.mine = mine;
+  }
+
+  getNumber() {
+    return this.number;
+  }
+
+  setNumber(number) {
+    this.number = number;
+  }
+
+  getRevealed() {
+    return this.revealed;
+  }
+
+  setRevealed(revealed) {
+    this.revealed = revealed;
   }
 }
