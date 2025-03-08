@@ -1,4 +1,5 @@
-import { Game } from "./Game.js";
+import { Game } from "./models/Game.js";
+import { closeMenu, updateHeaderWidth, updateOption } from "./ui/ui.js";
 
 let game;
 let firstClick = false;
@@ -9,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
   updateOption(initialDifficulty);
 
   const restartButton = document.getElementById("restart");
-  restartButton.addEventListener("click", () => restartGame(initialDifficulty));
+  restartButton.addEventListener("click", () => restartGame());
 
   window.addEventListener("click", (e) => {
     if (game.isGameOver) return;
@@ -23,15 +24,11 @@ window.addEventListener("DOMContentLoaded", () => {
       const cell = game.board.cells[index];
 
       if (cell) {
-        if (!firstClick) {
-          firstClick = true;
-          game.timer();
-          // Coloca las minas asegurando la zona del primer clic
-          game.board.placeMines(cell.x, cell.y);
-          cell.reveal(game.board, false, true);
-        } else {
-          cell.reveal(game.board, false, false);
-        }
+        firstClick = true;
+        game.timer();
+        // Coloca las minas asegurando la zona del primer clic
+        game.board.placeMines(cell.x, cell.y);
+        cell.reveal(game.board);
       }
     }
 
@@ -84,7 +81,7 @@ window.addEventListener("DOMContentLoaded", () => {
   window.toggleDropdown = toggleDropdown;
 
   function restartGame(difficulty) {
-    console.log("restart");
+    // Obtén la dificultad actual del localStorage, si no se pasa como parámetro
     const diff = difficulty || localStorage.getItem("difficulty") || "medium";
     firstClick = false;
 
@@ -97,35 +94,3 @@ window.addEventListener("DOMContentLoaded", () => {
     updateHeaderWidth();
   }
 });
-
-function updateHeaderWidth() {
-  let board = document.getElementById("board");
-  let header = document.getElementsByTagName("header")[0];
-  if (board && header) {
-    let boardWidth = board.offsetWidth;
-    header.style.width = `${boardWidth - 32}px`;
-  }
-}
-
-function updateOption(difficulty) {
-  const checks = document.getElementsByClassName("check");
-  Array.from(checks).forEach((check) => {
-    check.textContent = "";
-    if (check.parentNode.id.toLowerCase() === difficulty.toLowerCase()) {
-      check.textContent = "✓";
-      updateSelectedOption(difficulty);
-    }
-  });
-  localStorage.setItem("difficulty", difficulty);
-}
-
-function closeMenu() {
-  let dropdownMenu = document.getElementById("dropdown_menu");
-  dropdownMenu.style.display = "none";
-}
-
-function updateSelectedOption(difficulty) {
-  let selectedOption = document.getElementById("selectedOption");
-  selectedOption.textContent =
-    difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
-}

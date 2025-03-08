@@ -9,6 +9,7 @@ export class Game {
     };
     const { rows, cols, mines, flags } = settings[difficulty];
     this.board = new Board(rows, cols, mines, flags);
+    this.board.game = this;
     this.secondsElapsed = 0;
     this.isGameOver = false;
   }
@@ -21,8 +22,8 @@ export class Game {
 
   timer() {
     const timerElement = document.getElementById("timeCounter");
-    this.restartTimer(timerElement);
-    this.secondsElapsed = 0;
+
+    if (this._timerInterval) return; // Evita crear múltiples intervalos
 
     this._timerInterval = setInterval(() => {
       this.secondsElapsed++;
@@ -35,6 +36,7 @@ export class Game {
   gameOver() {
     this.isGameOver = true;
     this.stopTimer();
+    this.board.showMines();
   }
 
   restartTimer(timerElement = document.getElementById("timeCounter")) {
@@ -44,6 +46,9 @@ export class Game {
   }
 
   stopTimer() {
-    clearInterval(this._timerInterval);
+    if (this._timerInterval) {
+      clearInterval(this._timerInterval);
+      this._timerInterval = null; // Asegura que no haya reinicio accidental
+    }
   }
 }

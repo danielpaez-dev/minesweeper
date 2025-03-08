@@ -146,6 +146,15 @@ export class Board {
     return results;
   }
 
+  showMines() {
+    this.placedMines.forEach((index) => {
+      const cell = this.cells[index];
+      if (cell && !cell.getRevealed()) {
+        cell.reveal(this, true);
+      }
+    });
+  }
+
   updateFlags() {
     let flagCounter = document.getElementById("flagCounter");
     flagCounter.textContent = this.getFlags();

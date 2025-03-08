@@ -47,6 +47,11 @@ nav {
   font-weight: bold;
 }
 
+.container {
+  display: flex;
+  gap: 1em;
+}
+
 #game-info {
   display: flex;
   align-items: center;
