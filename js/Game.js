@@ -30,6 +30,7 @@ export class Game {
   }
 
   gameOver() {
+    // TODO: Fix game over when going to other game modes
     console.log("Game Over");
     clearInterval(this.timer);
     this.isGameOver = true;

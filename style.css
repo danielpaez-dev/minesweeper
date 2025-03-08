@@ -56,6 +56,11 @@ nav {
   font-size: x-large;
 }
 
+.icon {
+  width: 30px;
+  height: auto;
+}
+
 #flags,
 #timer {
   display: flex;
