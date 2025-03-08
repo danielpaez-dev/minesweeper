@@ -85,13 +85,15 @@ window.addEventListener("DOMContentLoaded", () => {
   window.toggleDropdown = toggleDropdown;
 
   function restartGame(difficulty) {
-    if (game.timer) {
-      clearInterval(game.timer);
-    }
-    document.getElementById("timeCounter").textContent = "000";
     const diff = difficulty || localStorage.getItem("difficulty") || "medium";
-    game = new Game(diff);
     firstClick = false;
+
+    if (game) {
+      game.stopTimer();
+    }
+
+    game = new Game(diff);
+    game.restartTimer();
     updateHeaderWidth();
   }
 });

@@ -20,19 +20,30 @@ export class Game {
   }
 
   timer() {
-    const timer = document.getElementById("timeCounter");
+    const timerElement = document.getElementById("timeCounter");
+    this.restartTimer(timerElement);
     this.secondsElapsed = 0;
 
-    this.timer = setInterval(() => {
+    this._timerInterval = setInterval(() => {
       this.secondsElapsed++;
-      timer.textContent = this.secondsElapsed.toString().padStart(3, "0");
+      timerElement.textContent = this.secondsElapsed
+        .toString()
+        .padStart(3, "0");
     }, 1000);
   }
 
   gameOver() {
-    // TODO: Fix game over when going to other game modes
-    console.log("Game Over");
-    clearInterval(this.timer);
     this.isGameOver = true;
+    this.stopTimer();
+  }
+
+  restartTimer(timerElement = document.getElementById("timeCounter")) {
+    clearInterval(this._timerInterval);
+    this.secondsElapsed = 0;
+    timerElement.textContent = "000";
+  }
+
+  stopTimer() {
+    clearInterval(this._timerInterval);
   }
 }
