@@ -8,7 +8,7 @@ export class Game {
       hard: { rows: 20, cols: 24, mines: 99, flags: 99 },
     };
     const { rows, cols, mines, flags } = settings[difficulty];
-    this.board = this.createBoard(rows, cols, mines, flags);
+    this.board = new Board(rows, cols, mines, flags);
     this.secondsElapsed = 0;
     this.isGameOver = false;
   }

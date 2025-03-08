@@ -8,9 +8,8 @@ window.addEventListener("DOMContentLoaded", () => {
   game = new Game(initialDifficulty);
   updateOption(initialDifficulty);
 
-  // Asignamos el event listener para el botón #restart
   const restartButton = document.getElementById("restart");
-  restartButton.addEventListener("click", restartGame);
+  restartButton.addEventListener("click", () => restartGame(initialDifficulty));
 
   window.addEventListener("click", (e) => {
     if (game.isGameOver) return;
@@ -85,6 +84,7 @@ window.addEventListener("DOMContentLoaded", () => {
   window.toggleDropdown = toggleDropdown;
 
   function restartGame(difficulty) {
+    console.log("restart");
     const diff = difficulty || localStorage.getItem("difficulty") || "medium";
     firstClick = false;
 
