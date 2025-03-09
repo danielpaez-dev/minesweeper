@@ -88,7 +88,6 @@ export class Board {
         placed++;
       }
     }
-    console.log(placed);
   }
 
   randomRow() {

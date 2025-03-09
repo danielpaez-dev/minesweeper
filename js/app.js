@@ -23,13 +23,13 @@ window.addEventListener("DOMContentLoaded", () => {
       const index = e.target.id;
       const cell = game.board.cells[index];
 
-      if (cell) {
+      if (cell && !firstClick) {
         firstClick = true;
         game.timer();
         // Coloca las minas asegurando la zona del primer clic
         game.board.placeMines(cell.x, cell.y);
-        cell.reveal(game.board);
       }
+      cell.reveal(game.board);
     }
 
     // Cierra el menú si se hace clic fuera del dropdown
