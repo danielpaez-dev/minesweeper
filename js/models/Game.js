@@ -52,4 +52,10 @@ export class Game {
       this._timerInterval = null; // Asegura que no haya reinicio accidental
     }
   }
+
+  victory() {
+    this.isGameOver = true;
+    this.stopTimer();
+    alert("¡Victory!");
+  }
 }

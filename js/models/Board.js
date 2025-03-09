@@ -31,7 +31,6 @@ export class Board {
     const cellWidth = Math.floor((width - 32) / this.cols); // Ajusta el ancho de las celdas
     const cellHeight = Math.floor((height - 100) / this.rows); // Ajusta el alto de las celdas
 
-    // Asegúrate de que las celdas no sean demasiado pequeñas
     const minCellSize = 20; // Tamaño mínimo de las celdas
     const cellSize = Math.max(minCellSize, Math.min(cellWidth, cellHeight));
 
@@ -70,7 +69,6 @@ export class Board {
     this.cells = {};
   }
 
-  // Resto de los métodos de la clase Board...
   placeMines(safeX, safeY) {
     let placed = 0;
     while (placed < this.mines) {
@@ -209,5 +207,23 @@ export class Board {
     return Object.keys(this.cells)
       .filter((key) => !this.placedMines.has(key))
       .map((key) => this.cells[key]);
+  }
+
+  calculateRemainingSafeCells() {
+    let count = 0;
+    for (const key in this.cells) {
+      const cell = this.cells[key];
+      if (!this.placedMines.has(key) && !cell.revealed) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  checkVictory() {
+    const safeCellsUnrevealed = this.calculateRemainingSafeCells();
+    if (safeCellsUnrevealed === 0) {
+      this.game.victory();
+    }
   }
 }

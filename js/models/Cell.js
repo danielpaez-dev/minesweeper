@@ -65,6 +65,7 @@ export class Cell {
         }
       }
       this.applyBorder(board);
+      board.checkVictory();
     }
   }
 
