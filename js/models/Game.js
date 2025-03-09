@@ -37,6 +37,7 @@ export class Game {
     this.isGameOver = true;
     this.stopTimer();
     this.board.showMines();
+    this.board.board.classList.add("game-over");
   }
 
   restartTimer(timerElement = document.getElementById("timeCounter")) {

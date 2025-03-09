@@ -30,3 +30,16 @@ function updateSelectedOption(difficulty) {
   selectedOption.textContent =
     difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
 }
+
+export function screenSize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  return { width, height };
+}
+
+export function onScreenResize(callback) {
+  window.addEventListener("resize", () => {
+    const size = screenSize();
+    callback(size); // Llama al callback con el nuevo tamaño
+  });
+}

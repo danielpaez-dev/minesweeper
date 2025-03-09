@@ -35,6 +35,14 @@ export class Cell {
     }
 
     if (this.getMine()) {
+      // Actualiza la clase según la paridad antes de mostrar la mina
+      if (this.isEven(this.x + this.y)) {
+        this.element.classList.remove("unrevealed-light");
+        this.element.classList.add("revealed-light");
+      } else {
+        this.element.classList.remove("unrevealed-dark");
+        this.element.classList.add("revealed-dark");
+      }
       this.placeMine();
       if (!this.boardInstance.game.isGameOver) {
         this.boardInstance.game.gameOver();

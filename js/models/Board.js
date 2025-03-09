@@ -1,4 +1,5 @@
 import { Cell } from "./Cell.js";
+import { screenSize, onScreenResize, updateHeaderWidth } from "../ui/ui.js";
 
 export class Board {
   constructor(rows, cols, mines, flags) {
@@ -12,12 +13,47 @@ export class Board {
     this.cells = {};
     this.placedMines = new Set();
 
+    // Escuchar cambios en el tamaño de la pantalla
+    onScreenResize((newSize) => {
+      this.adjustBoardSize(newSize);
+    });
+
+    // Crear el tablero con el tamaño inicial
+    const initialSize = screenSize();
+    this.adjustBoardSize(initialSize);
     this.createBoard();
+  }
+
+  adjustBoardSize(size) {
+    const { width, height } = size;
+
+    // Calcula el tamaño de las celdas en función del tamaño de la pantalla
+    const cellWidth = Math.floor((width - 32) / this.cols); // Ajusta el ancho de las celdas
+    const cellHeight = Math.floor((height - 100) / this.rows); // Ajusta el alto de las celdas
+
+    // Asegúrate de que las celdas no sean demasiado pequeñas
+    const minCellSize = 20; // Tamaño mínimo de las celdas
+    const cellSize = Math.max(minCellSize, Math.min(cellWidth, cellHeight));
+
+    // Aplica el nuevo tamaño al tablero
+    this.board.style.gridTemplate = `repeat(${this.rows}, ${cellSize}px) / repeat(${this.cols}, ${cellSize}px)`;
+    this.board.style.setProperty("--cell-size", `${cellSize}px`);
+
+    // Actualiza el tamaño de las celdas existentes
+    Object.values(this.cells).forEach((cell) => {
+      cell.element.style.width = `${cellSize}px`;
+      cell.element.style.height = `${cellSize}px`;
+    });
+
+    // Actualiza el ancho del header
+    updateHeaderWidth();
   }
 
   createBoard() {
     this.deleteBoard();
-    this.board.style.gridTemplate = `repeat(${this.rows}, 30px) / repeat(${this.cols}, 30px)`;
+    const initialSize = screenSize();
+    this.adjustBoardSize(initialSize);
+
     for (let y = 1; y <= this.rows; y++) {
       for (let x = 1; x <= this.cols; x++) {
         const cell = new Cell(x, y, this);
@@ -25,6 +61,7 @@ export class Board {
         this.board.appendChild(cell.element);
       }
     }
+    this.board.classList.remove("game-over");
     this.updateFlags();
   }
 
@@ -33,13 +70,13 @@ export class Board {
     this.cells = {};
   }
 
+  // Resto de los métodos de la clase Board...
   placeMines(safeX, safeY) {
     let placed = 0;
     while (placed < this.mines) {
       const x = this.randomCol();
       const y = this.randomRow();
 
-      // Si la celda candidata está en la zona segura (celda clickeada y sus adyacentes), la saltamos.
       if (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1) {
         continue;
       }
@@ -51,6 +88,7 @@ export class Board {
         placed++;
       }
     }
+    console.log(placed);
   }
 
   randomRow() {
@@ -97,7 +135,6 @@ export class Board {
 
     const index = `${x}-${y}`;
 
-    // Comprueba si la casilla ya ha sido checkeada por la función recursiva
     if (visited.has(index)) return;
     visited.add(index);
 
@@ -116,7 +153,7 @@ export class Board {
       }
     }
   }
-  // Mira si está dentro del límite del tablero
+
   isInLimit(x, y) {
     return x < 1 || x > this.cols || y < 1 || y > this.rows;
   }
