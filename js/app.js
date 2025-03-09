@@ -14,22 +14,28 @@ window.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("click", (e) => {
     if (game.isGameOver) return;
-    // Si se hace clic en una celda
-    if (
-      e.target.classList.contains("cell") &&
-      (e.target.classList.contains("unrevealed-light") ||
-        e.target.classList.contains("unrevealed-dark"))
-    ) {
-      const index = e.target.id;
-      const cell = game.board.cells[index];
 
-      if (cell && !firstClick) {
-        firstClick = true;
-        game.timer();
-        // Coloca las minas asegurando la zona del primer clic
-        game.board.placeMines(cell.x, cell.y);
+    // Si se hace clic en una celda
+    const cellElement = e.target.closest(".cell");
+    if (cellElement) {
+      const index = cellElement.id;
+      const cell = game.board.cells[index];
+      if (
+        e.target.classList.contains("unrevealed-light") ||
+        e.target.classList.contains("unrevealed-dark")
+      ) {
+        if (cell && !firstClick) {
+          firstClick = true;
+          game.timer();
+          // Coloca las minas asegurando la zona del primer clic
+          game.board.placeMines(cell.x, cell.y);
+        }
+        cell.reveal(game.board);
       }
-      cell.reveal(game.board);
+
+      if (cell.getRevealed() && cell.checkAdjacentFlags()) {
+        cell.revealAdjacentCells();
+      }
     }
 
     // Cierra el menú si se hace clic fuera del dropdown

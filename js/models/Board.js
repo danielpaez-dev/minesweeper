@@ -50,18 +50,22 @@ export class Board {
 
   createBoard() {
     this.deleteBoard();
-    const initialSize = screenSize();
-    this.adjustBoardSize(initialSize);
+    this.adjustBoardSize(screenSize());
 
     for (let y = 1; y <= this.rows; y++) {
       for (let x = 1; x <= this.cols; x++) {
-        const cell = new Cell(x, y, this);
-        this.cells[`${x}-${y}`] = cell;
-        this.board.appendChild(cell.element);
+        this.createCell(x, y);
       }
     }
+
     this.board.classList.remove("game-over");
     this.updateFlags();
+  }
+
+  createCell(x, y) {
+    const cell = new Cell(x, y, this);
+    this.cells[`${x}-${y}`] = cell;
+    this.board.appendChild(cell.element);
   }
 
   deleteBoard() {
@@ -75,9 +79,7 @@ export class Board {
       const x = this.randomCol();
       const y = this.randomRow();
 
-      if (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1) {
-        continue;
-      }
+      if (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1) continue;
 
       const index = `${x}-${y}`;
       if (!this.hasMine(index)) {
@@ -128,13 +130,10 @@ export class Board {
   }
 
   cascadeReveal(x, y, visited = new Set()) {
-    if (this.isInLimit(x, y)) return;
+    if (this.isInLimit(x, y) || visited.has(`${x}-${y}`)) return;
 
     const index = `${x}-${y}`;
-
-    if (visited.has(index)) return;
     visited.add(index);
-
     const cell = this.cells[index];
 
     if (!cell.revealed) {
@@ -143,12 +142,9 @@ export class Board {
 
     if (cell.number > 0) return;
 
-    for (let xCalculate = x - 1; xCalculate <= x + 1; xCalculate++) {
-      for (let yCalculate = y - 1; yCalculate <= y + 1; yCalculate++) {
-        if (xCalculate === x && yCalculate === y) continue;
-        this.cascadeReveal(xCalculate, yCalculate, visited);
-      }
-    }
+    this.knowAdjacentCells(x, y).forEach((adjCell) => {
+      this.cascadeReveal(adjCell.x, adjCell.y, visited);
+    });
   }
 
   isInLimit(x, y) {
@@ -156,26 +152,28 @@ export class Board {
   }
 
   knowNonDiagonalAdjacentCells(x, y) {
-    let nonDiagonalAdjacentIndexes = {
-      up: [x, y - 1],
-      left: [x - 1, y],
-      right: [x + 1, y],
-      down: [x, y + 1],
+    const adjacentCells = this.knowAdjacentCells(x, y);
+    const results = {
+      up: false,
+      left: false,
+      right: false,
+      down: false,
     };
 
-    const results = {};
+    adjacentCells.forEach((cell) => {
+      const dx = cell.x - x;
+      const dy = cell.y - y;
 
-    for (const [direction, [adjX, adjY]] of Object.entries(
-      nonDiagonalAdjacentIndexes
-    )) {
-      const index = `${adjX}-${adjY}`;
-      const cell = this.cells[index];
-      if (cell) {
-        results[direction] = cell.getRevealed();
-      } else {
-        results[direction] = false;
+      if (dx === 0 && dy === -1) {
+        results.up = cell.getRevealed();
+      } else if (dx === -1 && dy === 0) {
+        results.left = cell.getRevealed();
+      } else if (dx === 1 && dy === 0) {
+        results.right = cell.getRevealed();
+      } else if (dx === 0 && dy === 1) {
+        results.down = cell.getRevealed();
       }
-    }
+    });
 
     return results;
   }
@@ -190,8 +188,7 @@ export class Board {
   }
 
   updateFlags() {
-    let flagCounter = document.getElementById("flagCounter");
-    flagCounter.textContent = this.getFlags();
+    document.getElementById("flagCounter").textContent = this.getFlags();
   }
 
   getFlags() {
@@ -210,20 +207,44 @@ export class Board {
   }
 
   calculateRemainingSafeCells() {
-    let count = 0;
-    for (const key in this.cells) {
-      const cell = this.cells[key];
-      if (!this.placedMines.has(key) && !cell.revealed) {
-        count++;
-      }
-    }
-    return count;
+    return Object.values(this.cells).filter(
+      (cell) => !this.placedMines.has(`${cell.x}-${cell.y}`) && !cell.revealed
+    ).length;
   }
 
   checkVictory() {
-    const safeCellsUnrevealed = this.calculateRemainingSafeCells();
-    if (safeCellsUnrevealed === 0) {
+    if (this.calculateRemainingSafeCells() === 0) {
       this.game.victory();
     }
+  }
+
+  knowAdjacentCells(x, y) {
+    const adjacentCells = [];
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        if (dx === 0 && dy === 0) continue; // Saltar la celda actual
+
+        const adjX = x + dx;
+        const adjY = y + dy;
+        if (!this.isInLimit(adjX, adjY)) {
+          // Verificar si está dentro del tablero
+          const index = `${adjX}-${adjY}`;
+          adjacentCells.push(this.cells[index]);
+        }
+      }
+    }
+    return adjacentCells;
+  }
+
+  knowUnrevealedAdjacentCells(x, y) {
+    return this.knowAdjacentCells(x, y).filter((cell) => !cell.getRevealed());
+  }
+
+  knowAdjacentFlags(x, y) {
+    return this.knowAdjacentCells(x, y).filter((cell) => !cell.getFlag());
+  }
+
+  countAdjacentFlags(x, y) {
+    return this.knowAdjacentCells(x, y).filter((cell) => cell.getFlag()).length;
   }
 }

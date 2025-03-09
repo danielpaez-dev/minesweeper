@@ -14,12 +14,13 @@ export class Cell {
     const cell = document.createElement("div");
     cell.id = `${this.x}-${this.y}`;
     cell.className = "cell";
-    if (this.isEven(this.x + this.y)) {
-      cell.classList.add("unrevealed-light");
-    } else {
-      cell.classList.add("unrevealed-dark");
-    }
+    this.applyInitialStyle(cell);
     return cell;
+  }
+
+  applyInitialStyle(cell) {
+    const isEven = (this.x + this.y) % 2 === 0;
+    cell.classList.add(isEven ? "unrevealed-light" : "unrevealed-dark");
   }
 
   isEven(number) {
@@ -35,38 +36,43 @@ export class Cell {
     }
 
     if (this.getMine()) {
-      // Actualiza la clase según la paridad antes de mostrar la mina
-      if (this.isEven(this.x + this.y)) {
-        this.element.classList.remove("unrevealed-light");
-        this.element.classList.add("revealed-light");
-      } else {
-        this.element.classList.remove("unrevealed-dark");
-        this.element.classList.add("revealed-dark");
-      }
-      this.placeMine();
+      this.handleMineReveal();
       if (!this.boardInstance.game.isGameOver) {
         this.boardInstance.game.gameOver();
       }
     } else {
-      if (this.element.classList.contains("unrevealed-light")) {
-        this.element.classList.remove("unrevealed-light");
-        this.element.classList.add("revealed-light");
-      }
-      if (this.element.classList.contains("unrevealed-dark")) {
-        this.element.classList.remove("unrevealed-dark");
-        this.element.classList.add("revealed-dark");
-      }
-      board.countAdjacentMines(this.x, this.y);
-      if (this.number > 0) {
-        this.placeNumber();
-      } else {
-        if (!isCascade) {
-          board.cascadeReveal(this.x, this.y);
-        }
-      }
-      this.applyBorder(board);
+      this.handleSafeReveal(board, isCascade);
       board.checkVictory();
     }
+  }
+
+  handleMineReveal() {
+    this.updateCellStyle("revealed");
+    this.placeMine();
+  }
+
+  handleSafeReveal(board, isCascade) {
+    this.updateCellStyle("revealed");
+    board.countAdjacentMines(this.x, this.y);
+
+    if (this.number > 0) {
+      this.placeNumber();
+    } else if (!isCascade) {
+      board.cascadeReveal(this.x, this.y);
+    }
+
+    this.applyBorder(board);
+  }
+
+  updateCellStyle(state) {
+    const isEven = (this.x + this.y) % 2 === 0;
+    const lightClass =
+      state === "revealed" ? "revealed-light" : "unrevealed-light";
+    const darkClass =
+      state === "revealed" ? "revealed-dark" : "unrevealed-dark";
+
+    this.element.classList.remove("unrevealed-light", "unrevealed-dark");
+    this.element.classList.add(isEven ? lightClass : darkClass);
   }
 
   placeMine() {
@@ -87,7 +93,22 @@ export class Cell {
   }
 
   applyBorder(board) {
-    console.log(board.knowNonDiagonalAdjacentCells(this.x, this.y));
+    // console.log(board.knowNonDiagonalAdjacentCells(this.x, this.y));
+  }
+
+  checkAdjacentFlags() {
+    const adjacentCells = this.boardInstance.knowAdjacentCells(this.x, this.y);
+    const flagCount = adjacentCells.filter((cell) => cell.getFlag()).length;
+    return flagCount === this.number;
+  }
+
+  revealAdjacentCells() {
+    const adjacentCells = this.boardInstance.knowAdjacentCells(this.x, this.y);
+    adjacentCells.forEach((cell) => {
+      if (!cell.getRevealed() && !cell.getFlag()) {
+        cell.reveal(this.boardInstance);
+      }
+    });
   }
 
   placeFlag(flag) {
