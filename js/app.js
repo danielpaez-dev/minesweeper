@@ -31,25 +31,12 @@ window.addEventListener("DOMContentLoaded", () => {
     if (cellElement) {
       const index = cellElement.id;
       const cell = game.board.cells[index];
-      if (
-        e.target.classList.contains("unrevealed-light") ||
-        e.target.classList.contains("unrevealed-dark")
-      ) {
-        if (cell && !firstClick) {
-          firstClick = true;
-          game.timer();
-          // Coloca las minas asegurando la zona del primer clic
-          game.board.placeMines(cell.x, cell.y);
-        }
-        if (isMobile()) {
-          showActionPanel(cell, cellElement);
-        } else {
-          cell.reveal(game.board);
-        }
-      }
 
-      if (cell.getRevealed() && cell.checkAdjacentFlags()) {
-        cell.revealAdjacentCells();
+      if (isMobile()) {
+        showActionPanel(cell, cellElement);
+        return;
+      } else {
+        reveal(cell);
       }
     }
 
@@ -118,6 +105,21 @@ window.addEventListener("DOMContentLoaded", () => {
     updateHeaderWidth();
   }
 });
+
+export function reveal(cell) {
+  if (!cell) return;
+
+  if (!firstClick) {
+    firstClick = true;
+    game.timer();
+    game.board.placeMines(cell.x, cell.y);
+  }
+  cell.reveal(game.board);
+
+  if (cell.getRevealed() && cell.checkAdjacentFlags()) {
+    cell.revealAdjacentCells();
+  }
+}
 
 function isValidDifficulty(difficulty) {
   const validDifficulties = ["easy", "medium", "hard", "easyMobile", "mediumMobile", "hardMobile"];
