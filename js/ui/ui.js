@@ -1,13 +1,17 @@
-let DIFFICULTY_DEFAULT = "medium";
-if (isMobile()) {
+let DIFFICULTY_DEFAULT = localStorage.getItem("difficulty") || "medium";
+if (isMobile() && !DIFFICULTY_DEFAULT.endsWith("Mobile")) {
   DIFFICULTY_DEFAULT += "Mobile";
+  localStorage.setItem("difficulty", DIFFICULTY_DEFAULT);
 }
-
 export function updateHeaderWidth() {
   const board = document.getElementById("board");
   const header = document.getElementsByTagName("header")[0];
   if (board && header) {
-    header.style.width = `${board.offsetWidth - 32}px`;
+    if (isMobile()) {
+      header.style.width = `calc(100% - 32px)`;
+    } else {
+      header.style.width = `${board.offsetWidth - 32}px`;
+    }
   }
 }
 

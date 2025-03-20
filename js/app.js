@@ -5,10 +5,17 @@ let game;
 let firstClick = false;
 
 window.addEventListener("DOMContentLoaded", () => {
-  const initialDifficulty = localStorage.getItem("difficulty") || "medium";
-  if (isMobile()) {
+  let initialDifficulty = localStorage.getItem("difficulty");
+  if (isMobile() && !initialDifficulty.endsWith("Mobile")) {
+    initialDifficulty += "Mobile";
     updateOption(initialDifficulty + "Mobile");
   }
+
+  if (!isValidDifficulty(initialDifficulty)) {
+    initialDifficulty = "medium";
+    localStorage.setItem("difficulty", initialDifficulty);
+  }
+
   game = new Game(initialDifficulty);
   updateOption(initialDifficulty);
 
@@ -106,3 +113,8 @@ window.addEventListener("DOMContentLoaded", () => {
     updateHeaderWidth();
   }
 });
+
+function isValidDifficulty(difficulty) {
+  const validDifficulties = ["easy", "medium", "hard", "easyMobile", "mediumMobile", "hardMobile"];
+  return validDifficulties.includes(difficulty);
+}

@@ -44,6 +44,22 @@ header {
   padding: 1rem;
 }
 
+@media (max-width: 768px) {
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    flex-shrink: 0;
+  }
+
+  body {
+    padding-top: 4rem;
+    height: calc(100vh - 5rem);
+  }
+}
+
 nav {
   display: flex;
   justify-content: space-between;
