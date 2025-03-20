@@ -1,5 +1,6 @@
 import { Game } from "./models/Game.js";
 import { closeMenu, updateHeaderWidth, updateOption, isMobile } from "./ui/ui.js";
+import { showActionPanel } from "./ui/tapPanel.js";
 
 let game;
 let firstClick = false;
@@ -40,7 +41,11 @@ window.addEventListener("DOMContentLoaded", () => {
           // Coloca las minas asegurando la zona del primer clic
           game.board.placeMines(cell.x, cell.y);
         }
-        cell.reveal(game.board);
+        if (isMobile()) {
+          showActionPanel(cell, cellElement);
+        } else {
+          cell.reveal(game.board);
+        }
       }
 
       if (cell.getRevealed() && cell.checkAdjacentFlags()) {
