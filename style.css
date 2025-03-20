@@ -138,6 +138,11 @@ li {
   font-size: x-large;
 }
 
+#restart-container {
+  display: flex;
+  align-items: center;
+}
+
 #restart {
   cursor: pointer;
 }

@@ -12,8 +12,11 @@ export class Game {
   getDifficultySettings(difficulty) {
     const settings = {
       easy: { rows: 8, cols: 10, mines: 10, flags: 10 },
+      easyMobile: { rows: 12, cols: 6, mines: 10, flags: 10 },
       medium: { rows: 14, cols: 18, mines: 40, flags: 40 },
+      mediumMobile: { rows: 20, cols: 10, mines: 40, flags: 40 },
       hard: { rows: 20, cols: 24, mines: 99, flags: 99 },
+      hardMobile: { rows: 28, cols: 13, mines: 99, flags: 99 },
     };
     return settings[difficulty];
   }

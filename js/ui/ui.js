@@ -1,4 +1,7 @@
-export const DIFFICULTY_DEFAULT = "medium";
+let DIFFICULTY_DEFAULT = "medium";
+if (isMobile()) {
+  DIFFICULTY_DEFAULT += "Mobile";
+}
 
 export function updateHeaderWidth() {
   const board = document.getElementById("board");
@@ -10,9 +13,12 @@ export function updateHeaderWidth() {
 
 export function updateOption(difficulty) {
   const checks = document.getElementsByClassName("check");
+
   Array.from(checks).forEach((check) => {
     check.textContent = "";
-    if (check.parentNode.id.toLowerCase() === difficulty.toLowerCase()) {
+    const optionId = check.parentNode.id.toLowerCase();
+    const normalizedDifficulty = difficulty.replace("Mobile", "").toLowerCase();
+    if (optionId === normalizedDifficulty) {
       check.textContent = "✓";
       updateSelectedOption(difficulty);
     }
@@ -27,8 +33,10 @@ export function closeMenu() {
 
 function updateSelectedOption(difficulty) {
   const selectedOption = document.getElementById("selectedOption");
+  const displayDifficulty = difficulty.replace("Mobile", "");
   selectedOption.textContent =
-    difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
+    displayDifficulty.charAt(0).toUpperCase() +
+    displayDifficulty.slice(1).toLowerCase();
 }
 
 export function screenSize() {
@@ -40,6 +48,12 @@ export function screenSize() {
 export function onScreenResize(callback) {
   window.addEventListener("resize", () => {
     const size = screenSize();
-    callback(size); // Llama al callback con el nuevo tamaño
+    callback(size);
   });
+}
+
+export function isMobile() {
+  if (window.innerWidth <= 768) {
+    return true;
+  }
 }

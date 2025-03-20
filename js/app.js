@@ -1,11 +1,14 @@
 import { Game } from "./models/Game.js";
-import { closeMenu, updateHeaderWidth, updateOption } from "./ui/ui.js";
+import { closeMenu, updateHeaderWidth, updateOption, isMobile } from "./ui/ui.js";
 
 let game;
 let firstClick = false;
 
 window.addEventListener("DOMContentLoaded", () => {
   const initialDifficulty = localStorage.getItem("difficulty") || "medium";
+  if (isMobile()) {
+    updateOption(initialDifficulty + "Mobile");
+  }
   game = new Game(initialDifficulty);
   updateOption(initialDifficulty);
 
@@ -77,7 +80,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const options = document.querySelectorAll("#dropdown_menu li");
     options.forEach((option) => {
       option.addEventListener("click", (e) => {
-        const difficulty = e.target.id;
+        let difficulty = e.target.dataset.difficulty;
+        if (isMobile()) {
+          difficulty += "Mobile";
+        }
         updateOption(difficulty);
         restartGame(difficulty);
         closeMenu();
