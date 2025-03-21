@@ -10,29 +10,31 @@ export function showActionPanel(cell, cellElement) {
         existingPanels[0].remove();
     }
 
+    panel.style.width = `${cellSize * 1.2}px`;
+    panel.style.height = `${cellSize * 1.2}px`;
+
+    // Posicionar el panel centrado sobre la celda
+    panel.style.position = 'absolute';
+    panel.style.top = '50%';
+    panel.style.left = '50%';
+    panel.style.transform = 'translate(-50%, -50%)';
+
+    cellElement.style.position = 'relative';
+
+
     // Identificar botones e imágenes dentro del panel
     const actionClickButton = panel.querySelector(".action-click");
     const actionClickImg = actionClickButton.querySelector("img");
     const actionContextmenuButton = panel.querySelector(".action-contextmenu");
     const actionContextmenuImg = actionContextmenuButton.querySelector("img");
 
-    const buttonSize = cellSize + (cellSize * 30) / 100;
-    actionClickButton.style.width = `${buttonSize}px`;
-    actionClickButton.style.height = `${buttonSize}px`;
-    actionClickButton.style.borderRadius = "50%";
-
-    actionContextmenuButton.style.width = `${buttonSize}px`;
-    actionContextmenuButton.style.height = `${buttonSize}px`;
-    actionContextmenuButton.style.borderRadius = "50%";
-
     function closePanel() {
         if (panel.parentNode) {
             panel.parentNode.removeChild(panel);
         }
-        document.removeEventListener("click", handleClickOutside); // Eliminar el evento de clic al cerrar el panel
+        document.removeEventListener("click", handleClickOutside);
     }
 
-    // Función para manejar clics fuera del panel
     function handleClickOutside(event) {
         if (!panel.contains(event.target) && !cellElement.contains(event.target)) {
             closePanel();
@@ -55,5 +57,3 @@ export function showActionPanel(cell, cellElement) {
 
     cellElement.appendChild(panel);
 }
-
-// TODO: Arreglar que el menú mueva el número de debajo, no permitir el panel si la celda ha sido revelada

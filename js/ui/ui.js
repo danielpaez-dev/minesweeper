@@ -1,4 +1,5 @@
 let DIFFICULTY_DEFAULT = localStorage.getItem("difficulty") || "medium";
+
 if (isMobile() && !DIFFICULTY_DEFAULT.endsWith("Mobile")) {
   DIFFICULTY_DEFAULT += "Mobile";
   localStorage.setItem("difficulty", DIFFICULTY_DEFAULT);
@@ -53,6 +54,7 @@ export function onScreenResize(callback) {
   window.addEventListener("resize", () => {
     const size = screenSize();
     callback(size);
+    updateOptionSize();
   });
 }
 

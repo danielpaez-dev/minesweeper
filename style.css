@@ -198,11 +198,11 @@ li {
   background: var(--colour-cell-revealed-dark);
 }
 
-#board:not(.game-over) .unrevealed-light:hover,
-#board:not(.game-over) .unrevealed-dark:hover,
-#board:not(.game-over) .revealed-dark:has(span):hover,
-#board:not(.game-over) .revealed-light:has(span):hover {
-  filter: brightness(1.2) opacity(0.8);
+#board:not(.game-over) .unrevealed-light:hover:not(#action *),
+#board:not(.game-over) .unrevealed-dark:hover:not(#action *),
+#board:not(.game-over) .revealed-dark:has(span):hover:not(#action *),
+#board:not(.game-over) .revealed-light:has(span):hover:not(#action *) {
+  filter: brightness(1.1) opacity(1);
 }
 
 .mine-1::before,
@@ -220,6 +220,34 @@ li {
   border-radius: 50%;
   margin: auto;
   filter: brightness(0.6);
+}
+
+#action {
+  display: flex;
+  z-index: 1000;
+  position: relative;
+  gap: 0.25em;
+  z-index: 1000;
+}
+
+#action,
+#action * {
+  filter: none !important;
+}
+
+#action button {
+  z-index: 1000;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--colour-outside);
+  opacity: 1;
+}
+
+#action button img {
+  z-index: 1000;
+  width: 3rem;
+  height: auto;
+  opacity: 1;
 }
 
 .mine-1 {

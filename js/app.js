@@ -33,6 +33,11 @@ window.addEventListener("DOMContentLoaded", () => {
       const cell = game.board.cells[index];
 
       if (isMobile()) {
+        if (cell.getNumber() > 0) {
+          reveal(cell);
+          return;
+        }
+        if (cell.getRevealed()) return;
         showActionPanel(cell, cellElement);
         return;
       } else {
